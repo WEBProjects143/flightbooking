@@ -1,0 +1,48 @@
+.flight-container {
+  width: 90%;
+  margin: 30px auto;
+}
+
+.flight-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.flight-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f4f6f8;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-info,
+.flight-info {
+  flex: 1;
+}
+
+.user-info h4 {
+  margin: 0;
+  color: #333;
+}
+
+.flight-info p,
+.user-info p {
+  margin: 5px 0;
+}
+
+.action button {
+  padding: 8px 15px;
+  background: #007bff;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.action button:hover {
+  background: #0056b3;
+}

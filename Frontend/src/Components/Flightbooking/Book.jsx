@@ -22,6 +22,7 @@ const Book = () => {
         passengerName: form.passengerName,
         email: form.email,
         flightId: id,
+        status:"confirm"
         });
 
         alert("Booking Confirmed!");

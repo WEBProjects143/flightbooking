@@ -21,7 +21,6 @@ const Results = () => {
         withCredentials: true
       })
       .then(res => {
-        console.log(res.data)
         setFlights(res.data);
         setLoading(false);
       })

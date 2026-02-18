@@ -1,7 +1,10 @@
 const express = require("express");
-const { searchFlights } = require("../controller/flightController");
+const auth=require("../middlware/auth");
+const { searchFlights,getFlightsById,flightList} = require("../controller/flightController");
 const router = express.Router();
 
-router.get("/search", searchFlights);
+// router.get("/search", searchFlights);
+// router.get("/:id", getFlightsById);
+router.get("/lists",auth,flightList);
 
 module.exports = router;

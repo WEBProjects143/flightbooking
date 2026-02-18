@@ -9,7 +9,7 @@ const Navbar = () => {
         <li>Trains</li>
         <li>Buses</li>
         <li>Cabs</li>
-        <li>Tickets</li>
+        <li><a href="/Tickets">Tickets</a></li>
       </ul>
 
       <button className="login-btn"> <a href="/login" target="">Login</a> / <a href="/signup" target="">Signup</a></button>

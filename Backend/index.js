@@ -44,5 +44,5 @@ app.get("/",verify, (req,res)=>{
 })
 
 sequelize.sync().then(() => {
-  app.listen(4000, () => console.log("Backend running on port 4000"));
+  app.listen(4000,{force: true},() => console.log("Backend running on port 4000"));
 });
