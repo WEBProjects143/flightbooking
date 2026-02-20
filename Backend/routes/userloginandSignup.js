@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const session= require("express-session")
 const jwt = require("jsonwebtoken");
 const User = require("../model/user");
 
@@ -19,23 +20,27 @@ router.post("/signup", async (req, res) => {
 
 // LOGIN
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
   const user = await User.findOne({ where: { email } });
   if (!user) return res.status(401).json({ error: "Invalid credentials" });
 
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) return res.status(401).json({ error: "Invalid credentials" });
-
   const token = jwt.sign(
     { id: user.id },
     "jwt_secret",
     { expiresIn: "1h" }
   );
 
-  req.session.jwt = token;
-
-  res.json({ message: "Login successful" });
+  req.session.user=user.id;
+  res.status(200).json({ message: "Login successful" });
+    
+  } catch (error) {
+    res.status(500).json({msg:error})
+  }
+  
 });
 
 // LOGOUT

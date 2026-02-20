@@ -21,7 +21,7 @@ export default function Signup() {
       password: e.target.password.value
     });
     alert("Signup successful");
-    navigate(`/`)
+    navigate(`/login`)
   };
 
   return (

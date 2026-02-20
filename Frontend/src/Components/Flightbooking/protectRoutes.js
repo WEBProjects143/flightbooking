@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-const ProtectedRoute = ({ children }) => {
+const protect= ({ children }) => {
     const navigate=useNavigate();
   const token = localStorage.getItem("token");
 
@@ -15,4 +15,4 @@ if (!token) return null;
   return children;
 };
 
-export default ProtectedRoute;
+export default protect;

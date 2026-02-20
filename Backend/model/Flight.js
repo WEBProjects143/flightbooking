@@ -1,7 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
 
-module.exports = (sequelize) => {
 const Flight = sequelize.define('flight', {
     id: {
       type: DataTypes.INTEGER,
@@ -42,13 +41,11 @@ const Flight = sequelize.define('flight', {
       allowNull: true,
     },
   }, {
-    tableName: '',
+    tableName: 'flight',
     timestamps: true, // enables createdAt & updatedAt
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
   });
-
-  return Flight;
-};
+ module.exports=Flight;
 
 

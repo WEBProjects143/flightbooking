@@ -15,18 +15,27 @@ const Results = () => {
   const date = params.get("date");
 
   useEffect(() => {
+    if (!from || !to || !date) {
+      setLoading(false);
+      return;
+    }
+
     axios
-      .get("http://localhost:4000/api/flights/search", {
-        params: { from, to, date },
-        withCredentials: true
-      })
+      .post(
+        "http://localhost:4000/api/flights/search",
+        { from, to, date },
+        { withCredentials: true }
+      )
       .then(res => {
-        setFlights(res.data);
+        setFlights(res.data || []);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
-  }, []);
-
+      .catch(err => {
+        console.error(err.response?.data || err.message);
+        setLoading(false);
+      });
+  }, [from, to, date]);
+  console.log(flights)
   if (loading) return <h3>Loading flights...</h3>;
 
   return (

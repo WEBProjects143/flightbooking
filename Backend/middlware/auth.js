@@ -1,21 +1,16 @@
-const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
   try {
-    const token = req.session.jwt;
+    const userId = req.session.user;
+    console.log("Authenticated user id:", userId);
 
-    if (!token) {
-      return res.status(401).json({ message: "Not authenticated" });
+    if (!userId) {
+      return res.status(401).json({ message: "Not authorized" });
     }
 
-    const decoded = jwt.verify(token, "jwt_secret");
-    console.log(decoded)
-    // Attach user id to request
-    req.userId = decoded.id;
-
+    req.userId = userId;
     next();
-
   } catch (error) {
-    res.status(401).json({ message: "Invalid or expired token" });
+    res.status(401).json({ error });
   }
 };

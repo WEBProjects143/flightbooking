@@ -9,60 +9,76 @@ const EditBooking = () => {
 
   const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [flights, setflights] = useState(null);
 
-useEffect(() => {
-  const fetchBooking = async () => {   
+  useEffect(() => {
+    const fetchBooking = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:4000/api/bookings/${id}`,
+          { withCredentials: true }
+        );
+        setBooking(res.data);
+        setLoading(false);
+      } catch (error) {
+        alert("Booking not found");
+        navigate("/tickets");
+      }
+    };
+
+    fetchBooking();
+  }, [id, navigate]);
+
+  const updateBooking = async () => {
     try {
-         const res = await axios.get(
-        `http://localhost:4000/api/bookings/books`
+      await axios.put(
+        `http://localhost:4000/api/bookings/${id}`,
+        {
+          passengerName: booking.passengerName,
+          email: booking.email,
+        },
+        { withCredentials: true }
       );
-      const fly=await axios.get(`http://localhost:4000/api/flights/books`);
- console.log(fly)
-      setBooking(res.data[0]);
-      // console.log(booking)
-      setLoading(false);
+      alert("Booking Updated!");
+      navigate("/tickets");
     } catch (error) {
-
-         alert("Booking not found");
-      navigate("/");
+      alert("Failed to update booking");
     }
   };
 
-  fetchBooking();
-}, [id, navigate]);
-
-
-  const updateBooking = async () => {
-    await axios.put(
-      `http://localhost:4000/api/bookings/${id}`,
-      booking
-    );
-    alert("Booking Updated!");
-    navigate("/");
-  };
-
   const cancelBooking = async () => {
-    await axios.patch(
-      `http://localhost:4000/api/bookings/cancel/${id}`
-    );
-    alert("Booking Cancelled!");
-    navigate("/");
+    try {
+      await axios.patch(
+        `http://localhost:4000/api/bookings/cancel/${id}`,
+        {},
+        { withCredentials: true }
+      );
+      alert("Booking Cancelled!");
+      navigate("/tickets");
+    } catch (error) {
+      alert("Failed to cancel booking");
+    }
   };
 
   const deleteBooking = async () => {
-    await axios.delete(
-      `http://localhost:4000/api/bookings/${id}`
-    );
-    alert("Booking Deleted!");
-    navigate("/");
+    try {
+      await axios.delete(
+        `http://localhost:4000/api/bookings/${id}`,
+        { withCredentials: true }
+      );
+      alert("Booking Deleted!");
+      navigate("/tickets");
+    } catch (error) {
+      alert("Failed to delete booking");
+    }
   };
 
-  if (loading) {
+  if (loading || !booking) {
     return (
-    <>
-    <h2>Loading...</h2>
-    </>)}
+      <>
+        <h2>Loading...</h2>
+      </>
+    );
+  }
 
   return (
     <div className="edit-container">
@@ -85,14 +101,24 @@ useEffect(() => {
           setBooking({ ...booking, email: e.target.value })
         }
       />
+
       <label>Status</label>
       <input type="text" value={booking.status} disabled />
-        <label>Flight Details</label>
-      <p><strong>Airline:</strong></p>
-      <p><strong>From:</strong></p>
-      <p><strong>To:</strong> </p>
-      <p><strong>Date:</strong> </p>
-      <p><strong>Price:</strong> ₹</p>
+
+      <div className="ticket-details">
+        <h3>Ticket Details</h3>
+        {booking.Flight ? (
+          <>
+            <p><strong>Airline:</strong> {booking.Flight.airline}</p>
+            <p><strong>From:</strong> {booking.Flight.from}</p>
+            <p><strong>To:</strong> {booking.Flight.to}</p>
+            <p><strong>Date:</strong> {booking.Flight.date}</p>
+            <p><strong>Price:</strong> ₹{booking.Flight.price}</p>
+          </>
+        ) : (
+          <p>No flight details available for this booking.</p>
+        )}
+      </div>
 
       <div className="button-group">
         <button className="update-btn" onClick={updateBooking}>

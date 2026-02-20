@@ -30,6 +30,11 @@ const Dashboard = () => {
       return;
     }
 
+    if (form.from === form.to) {
+      alert("From and To locations must be different");
+      return;
+    }
+
     navigate(
       `/results?from=${form.from}&to=${form.to}&date=${form.date}`
     );
@@ -58,11 +63,13 @@ const Dashboard = () => {
               onChange={e => setForm({ ...form, from: e.target.value })}
             >
               <option value="">Select City</option>
-              {indianAirports.map(port => (
-                <option key={port.code} value={port.code}>
-                  {port.name} ({port.code})
-                </option>
-              ))}
+              {indianAirports
+                .filter(port => port.code !== form.to)
+                .map(port => (
+                  <option key={port.code} value={port.code}>
+                    {port.name} ({port.code})
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -75,11 +82,13 @@ const Dashboard = () => {
               onChange={e => setForm({ ...form, to: e.target.value })}
             >
               <option value="">Select City</option>
-              {indianAirports.map(port => (
-                <option key={port.code} value={port.code}>
-                  {port.name} ({port.code})
-                </option>
-              ))}
+              {indianAirports
+                .filter(port => port.code !== form.from)
+                .map(port => (
+                  <option key={port.code} value={port.code}>
+                    {port.name} ({port.code})
+                  </option>
+                ))}
             </select>
           </div>
 
